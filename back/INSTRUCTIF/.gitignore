@@ -1,0 +1,12 @@
+target/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS / misc
+.DS_Store
+Thumbs.db
