@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Demandes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Demandes</h1>
+        <button id="bouton-lister-demandes">Lister les demandes</button>
+        <h2>Liste des demandes</h2>
+        <a href="./"> Accueil </a> 
+        <ul id="liste-demandes">
+        </ul>
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page");
+                listerDemandes();
+                document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Lister demandes'");
+                    listerDemandes();
+                });
+            };
+            
+            async function listerDemandes() {
+                console.log("Appel de l'Action: Consulter liste demandes");
+                let url = './ActionServlet?todo=consulter-liste-demandes';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    console.log('Affichage de la liste de demandes');
+                    const listeContainer = document.getElementById("liste-demandes");
+                    
+                    let html = "";
+                    for (demande of jsonResponse["demandes"]) {
+                        html += `
+                            <li>#` + demande["id"] + ` : ` + demande["description"] + ` faite le ` + demande["dateCreation"] + `</li>
+                        `;
+            
+                        //const elmtLi = document.createElement("li");
+                        //const elmtTxt = document.createTextNode(demande["description"]);
+                        //elmtLi.appendChild(elmtTxt);
+                        //listeContainer.appendChild(elmtLi);
+                    }
+                    
+                    listeContainer.innerHTML = html;
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>
