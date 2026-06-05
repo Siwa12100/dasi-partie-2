@@ -6,12 +6,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Demandes</h1>
-        <button id="bouton-lister-demandes">Lister les demandes</button>
-        <h2>Liste des demandes</h2>
-        <a href="./"> Accueil </a> 
-        <ul id="liste-demandes">
-        </ul>
+        <h1>Page de connexion</h1>
+        
+        <form id="form">
+            <label for="inputMail">Email :</label>
+            <input id="inputMail" type="email" />
+
+            <label for="inputPassword">Password :</label>
+            <input id="inputPassword" type="password" />
+
+            <label for="inputRemember">Se souvenir de moi</label>
+            <input id="inputRemember" type="checkbox" />
+
+            <button type="submit">Se connecter</button>
+            <a>Créer un compte élève</a>
+        </form>
+
         <script>
             function initPage() {
                 console.log("Initialisation de la page");
