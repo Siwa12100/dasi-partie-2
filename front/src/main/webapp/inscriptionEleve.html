@@ -11,10 +11,39 @@
             <p>INSTRUCT'IF</p>
         </header>
 
-
-        <h1 class="form-title">Page de connexion</h1>
+        <h1 class="form-title">Formulaire d'inscription</h1>
         
         <form id="form" class="login-form">
+            <div class="label-input">
+                <label for="inputNom">Nom :</label>
+                <input id="inputNom" type="text" />
+            </div>
+            
+            <div class="label-input">
+                <label for="inputPassword">Prénom :</label>
+                <input id="inputPassword" type="text" />
+            </div>
+
+            <div class="label-input">
+                <label for="inputPassword">Date de naissance :</label>
+                <input id="inputPassword" type="date" />
+            </div>
+
+            <div class="label-input">
+                <label for="inputPassword">Code d'établissement :</label>
+                <input id="inputPassword" type="text" />
+            </div>
+
+            <div class="label-input">
+                <label for="inputPassword">Classe :</label>
+                <select id="inputPassword">
+                    <option value="6">6e</option>
+                    <option value="5">5e</option>
+                    <option value="4">4e</option>
+                    <option value="3">3e</option>
+                </select>
+            </div>
+
             <div class="label-input">
                 <label for="inputMail">Email :</label>
                 <input id="inputMail" type="email" />
@@ -26,13 +55,7 @@
             </div>
 
             <div class="label-input">
-                <label for="inputRemember">Se souvenir de moi</label>
-                <input id="inputRemember" type="checkbox" />
-            </div>
-
-            <div class="label-input">
-                <button class="btn">Se connecter</button>
-                <a class="btn" href="creationCompteEleve.html">Créer un compte élève</a>
+                <button class="btn">Valider l'inscription</button>
             </div>
         </form>
 

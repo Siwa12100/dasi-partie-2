@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Demandes</title>
+        <title>Connexion élève</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1>Demandes</h1>
-        <button id="bouton-lister-demandes">Lister les demandes</button>
-        <h2>Liste des demandes</h2>
-        <a href="./"> Accueil </a> 
-        <ul id="liste-demandes">
-        </ul>
+        <header>
+            <p>INSTRUCT'IF</p>
+        </header>
+
+
+        <h1 class="form-title">Page de connexion</h1>
+        
+        <form id="form" class="login-form">
+            <div class="label-input">
+                <label for="inputMail">Email :</label>
+                <input id="inputMail" type="email" />
+            </div>
+            
+            <div class="label-input">
+                <label for="inputPassword">Password :</label>
+                <input id="inputPassword" type="password" />
+            </div>
+
+            <div class="label-input">
+                <label for="inputRemember">Se souvenir de moi</label>
+                <input id="inputRemember" type="checkbox" />
+            </div>
+
+            <div class="label-input">
+                <button class="btn">Se connecter</button>
+            </div>
+        </form>
+
         <script>
             function initPage() {
                 console.log("Initialisation de la page");
