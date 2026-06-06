@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Connexion élève</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header>
+            <div class="nav">
+                <p>INSTRUCT'IF</p>
+            </div>
+            
+            <p>Matis</p>
+        </header>
+
+
+        <h1 class="form-title">Bilan</h1>
+        
+        <div class="dual-container">
+            <div class="bilan-left">
+                <div class="details">
+                    <p>Eleve : John Doe</p>
+                    <p>Niveau : 4e</p>
+                    <p>Durée de la séance : 1 heure</p>
+                    <p>Date de la séance : 01/01/2023</p>
+                </div>
+                <a href="historiqueEleve.html" class="btn">Retour à l'accueil</a>
+                <a href="demandeEleve.html" class="btn">Accéder à la fiche de l'élève</a>
+            </div>
+
+            <div class="bilan-right">
+                <form>
+                    <p>Bilan de la séance du 21/01/2023</p>
+
+                    <div class="label-input">
+                        <label for="inputMail">A :</label>
+                        <input id="inputMail" type="text" readonly />
+                    </div>
+                    
+                    <div class="label-input">
+                        <label for="inputPassword">De :</label>
+                        <input id="inputPassword" type="text" readonly />
+                    </div>
+
+                    <div class="label-input">
+                        <label for="inputPassword">Sujet :</label>
+                        <input id="inputPassword" type="text" readonly />
+                    </div>
+
+                    <textarea placeholder="Bilan de la séance">Oui.</textarea>
+
+                    <div class="label-input">
+                        <button class="btn">Envoyer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            var toggler = document.getElementsByClassName("caret");
+            var i;
+
+            for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function() {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+            }
+
+            function initPage() {
+                console.log("Initialisation de la page");
+                listerDemandes();
+                document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Lister demandes'");
+                    listerDemandes();
+                });
+            };
+            
+            async function listerDemandes() {
+                console.log("Appel de l'Action: Consulter liste demandes");
+                let url = './ActionServlet?todo=consulter-liste-demandes';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    console.log('Affichage de la liste de demandes');
+                    const listeContainer = document.getElementById("liste-demandes");
+                    
+                    let html = "";
+                    for (demande of jsonResponse["demandes"]) {
+                        html += `
+                            <li>#` + demande["id"] + ` : ` + demande["description"] + ` faite le ` + demande["dateCreation"] + `</li>
+                        `;
+            
+                        //const elmtLi = document.createElement("li");
+                        //const elmtTxt = document.createTextNode(demande["description"]);
+                        //elmtLi.appendChild(elmtTxt);
+                        //listeContainer.appendChild(elmtLi);
+                    }
+                    
+                    listeContainer.innerHTML = html;
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>
