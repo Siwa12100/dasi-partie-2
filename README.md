@@ -32,6 +32,28 @@ Jean & Nicolas
 | GET     | `recupererThemesParMatiere` | `idMatiere` | `[{ id, nom, matiere: { id, nom } }, ...]`   |
 
 
+### /seances
+
+| Méthode | `todo`                 | Paramètres                        | Retour                  |
+|---------|------------------------|-----------------------------------|-------------------------|
+| GET     | `recuperer`            | `id`                              | SeanceSoutien           |
+| GET     | `recupererAttribuee`   | `idIntervenant`                   | SeanceSoutien           |
+| GET     | `historiqueEleve`      | `idEleve`                         | [SeanceSoutien, ...]    |
+| GET     | `historiqueIntervenant`| `idIntervenant`                   | [SeanceSoutien, ...]    |
+| POST    | `demander`             | `idEleve`, `idTheme`, `description` | SeanceSoutien créée   |
+| POST    | `accepter`             | `id`                              | `{ succes: true/false }`|
+| POST    | `refuser`              | `id`                              | `{ succes: true/false }`|
+| POST    | `terminer`             | `id`                              | `{ succes: true/false }`|
+| POST    | `bilan`                | `id`, `compteRendu`               | `{ succes: true/false }`|
+
+### /statistiques
+
+| Méthode | `todo`         | Paramètres      | Retour                                                      |
+|---------|----------------|-----------------|-------------------------------------------------------------|
+| GET     | `intervenant`  | `idIntervenant` | `{ entretiensNb, moyenneDuree, colleges: [{id, nom}, ...] }`|
+
+
+
 
 ## Lancer un projet maven
 
