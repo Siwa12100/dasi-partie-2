@@ -3,23 +3,14 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev",
   "workspaceFolder": "/workspaces/patiment",
-  "runServices": [
-    "dev",
-    "dasi-mariadb"
-  ],
+  "runServices": ["dev", "dasi-mariadb"],
   "shutdownAction": "stopCompose",
   "remoteUser": "root",
-  "forwardPorts": [
-    4377,
-    9090
-  ],
+  "forwardPorts": [4379, 8080, 9090],
   "portsAttributes": {
-    "4377": {
-      "label": "MariaDB"
-    },
-    "9090": {
-      "label": "App 9090"
-    }
+    "4379": { "label": "MariaDB" },
+    "8080": { "label": "Tomcat" },
+    "9090": { "label": "App 9090" }
   },
   "customizations": {
     "vscode": {
@@ -43,5 +34,5 @@
       ]
     }
   },
-  "postCreateCommand": "git config --global --add safe.directory /workspaces/patiment && cd patiment && mvn -q -DskipTests dependency:go-offline || true"
+  "postCreateCommand": "git config --global --add safe.directory /workspaces/patiment && cd /workspaces/patiment/back/INSTRUCTIF && mvn -q -DskipTests install && cd /workspaces/patiment/front && mvn -q -DskipTests package && cp target/td2-1.0-SNAPSHOT.war /opt/tomcat/webapps/td2.war"
 }
