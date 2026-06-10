@@ -14,5 +14,8 @@ public class AuthentifierIntervenantAction extends Action {
         ServiceIntervenant service = new ServiceIntervenant();
         Intervenant intervenant = service.authentifierIntervenant(mail, mdp);
         request.setAttribute("succes", intervenant != null);
+        if (intervenant != null) {
+            request.setAttribute("intervenantId", intervenant.getId());
+        }
     }
 }

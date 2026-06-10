@@ -18,8 +18,15 @@ public class AuthentifierEleveAction extends Action {
 
             Eleve eleve = new ServiceEleve().authentifierEleve(mail, mdp);
             request.setAttribute("eleve", eleve);
+            if (eleve != null) {
+                request.setAttribute("eleveId", eleve.getId());
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            // Définir message erreur de la réponse http
+            request.setAttribute("erreur", "Erreur lors de l'authentification de l'élève");
+            // Modifier code retour http
+            request.setAttribute("codeRetour", 500);
             request.setAttribute("eleve", null);
         }
     }
