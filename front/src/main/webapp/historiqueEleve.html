@@ -33,7 +33,7 @@
                         <th>Voir plus</th>
                     </tr>
                 </thead>
-                <tbody id="liste-demandes">
+                <tbody id="liste-sceances">
                     <tr>
                         <td>1</td>
                         <td>2024-06-01</td>
@@ -51,7 +51,7 @@
                 </tbody>
             </table>
 
-            <div class="details">
+            <div class="details" id="details">
                 <p>Description :</p>
                 <p>oui</p>
                 <p>Bilan :</p>
@@ -63,46 +63,52 @@
         <script>
             function initPage() {
                 listerHistoriqueEleve();
-                document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
-                    listerHistoriqueEleve();
-                });
             };
             
             async function listerHistoriqueEleve() {
-                console.log("Appel de l'Action: Consulter liste demandes");
-                let url = './ActionServlet?todo=consulter-liste-demandes';
-                let jsonResponse = await fetch(url)
-                        .then(
-                            function(httpResponse) {
-                                return httpResponse.json();
-                            }
-                        )
-                        .catch(
-                            function(error) {
-                                console.log(error);
-                                return null;
-                            }
-                        );
-                console.log(jsonResponse);
+                const url = './api/sceances/historiqueEleve';
+                
+                const jsonResponse = await getRequest(url, "Impossible de se connecter.");
+                
                 if (jsonResponse) {
-                    console.log('Affichage de la liste de demandes');
-                    const listeContainer = document.getElementById("liste-demandes");
+                    const tbodyContainer = document.getElementById("liste-sceances");
                     
                     let html = "";
-                    for (demande of jsonResponse["demandes"]) {
+                    for (sceance of jsonResponse["sceances"]) {
                         html += `
-                            <li>#` + demande["id"] + ` : ` + demande["description"] + ` faite le ` + demande["dateCreation"] + `</li>
+                            <tr>
+                                <td>` + sceance["id"] + `</td>
+                                <td>` + sceance["date"] + `</td>
+                                <td>` + sceance["theme"] + `</td>
+                                <td>` + sceance["intervenant"] + `</td>
+                                <td><button onclick="voirDetails(` + sceance["id"] + `)">Voir plus</button></td>
+                            </tr>
                         `;
-            
-                        //const elmtLi = document.createElement("li");
-                        //const elmtTxt = document.createTextNode(demande["description"]);
-                        //elmtLi.appendChild(elmtTxt);
-                        //listeContainer.appendChild(elmtLi);
                     }
                     
-                    listeContainer.innerHTML = html;
+                    tbodyContainer.innerHTML = html;
                 }
             }
+
+            async function voirDetails(idSceance) {
+                const url = './api/sceances/' + idSceance;
+                
+                const jsonResponse = await getRequest(url, "Impossible de se connecter.");
+                
+                if (jsonResponse) {
+                    const detailsContainer = document.getElementById("details");
+                    
+                    let html = `
+                        <p>Description :</p>
+                        <p>` + jsonResponse["description"] + `</p>
+                        <p>Bilan :</p>
+                        <p>` + jsonResponse["bilan"] + `</p>
+                    `;
+                    
+                    detailsContainer.innerHTML = html;
+                }
+            }
+
             window.onload = initPage;
         </script>
     </body>
