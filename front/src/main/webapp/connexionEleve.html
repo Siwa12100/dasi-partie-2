@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css" />
+        <script src="sweetalert.min.js"></script>
     </head>
     <body>
         <header>
@@ -31,7 +32,7 @@
             </div>
 
             <div class="label-input">
-                <button class="btn">Se connecter</button>
+                <button class="btn" type="submit">Se connecter</button>
                 <a class="btn" href="creationCompteEleve.html">Créer un compte élève</a>
             </div>
         </form>
@@ -39,46 +40,51 @@
         <script>
             function initPage() {
                 console.log("Initialisation de la page");
-                listerDemandes();
-                document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
-                    console.log("Click sur le bouton 'Lister demandes'");
-                    listerDemandes();
+                document.getElementById('form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    console.log("Click sur le bouton 'Se connecter'");
+                    connexionEleve();
                 });
             };
             
-            async function listerDemandes() {
-                console.log("Appel de l'Action: Consulter liste demandes");
-                let url = './ActionServlet?todo=consulter-liste-demandes';
-                let jsonResponse = await fetch(url)
-                        .then(
-                            function(httpResponse) {
-                                return httpResponse.json();
-                            }
-                        )
-                        .catch(
-                            function(error) {
-                                console.log(error);
-                                return null;
-                            }
-                        );
-                console.log(jsonResponse);
-                if (jsonResponse) {
-                    console.log('Affichage de la liste de demandes');
-                    const listeContainer = document.getElementById("liste-demandes");
-                    
-                    let html = "";
-                    for (demande of jsonResponse["demandes"]) {
-                        html += `
-                            <li>#` + demande["id"] + ` : ` + demande["description"] + ` faite le ` + demande["dateCreation"] + `</li>
-                        `;
-            
-                        //const elmtLi = document.createElement("li");
-                        //const elmtTxt = document.createTextNode(demande["description"]);
-                        //elmtLi.appendChild(elmtTxt);
-                        //listeContainer.appendChild(elmtLi);
+            async function connexionEleve() {
+                console.log("Appel de l'Action: Connexion élève");
+
+                let email = document.getElementById('inputMail').value;
+                let password = document.getElementById('inputPassword').value;
+
+                let url = './eleves?todo=authentifier';
+                let jsonResponse = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        mail: email,
+                        password: password
+                    })
+                }).then(
+                    function(httpResponse) {
+                        let jsonResponse = null;
+
+                        try {
+                            jsonResponse = httpResponse.json();
+                        } catch {}
+
+                        if (!httpResponse.ok || jsonResponse?.success == false) {
+                            throw new Error("HTTP error " + httpResponse.status + ": " + (jsonResponse?.message ?? "Erreur inconnue"));
+                        }
+                        return jsonResponse;
                     }
-                    
-                    listeContainer.innerHTML = html;
+                ).catch(
+                    function(error) {
+                        swal("Oups !", "Impossible de se connecter. " + error, "error");
+                        return null;
+                    }
+                );
+                
+                if (jsonResponse) {
+                    window.location.href = "historiqueEleve.html";
                 }
             }
             window.onload = initPage;
