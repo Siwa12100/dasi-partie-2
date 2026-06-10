@@ -30,12 +30,14 @@ public class ActionServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        super.init();
         JpaUtil.creerFabriquePersistance();
     }
 
     @Override
     public void destroy() {
         JpaUtil.fermerFabriquePersistance();
+        super.destroy();
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -48,15 +50,6 @@ public class ActionServlet extends HttpServlet {
         System.out.println("Method : " + method);
 
         switch (path) {
-
-            // -------------------------------------------------------
-            // Ancienne route
-            // -------------------------------------------------------
-            case "/consulter-liste-demandes":
-                new ConsulterListeDemandesAction().execute(request);
-                new ListeDemandesSerialisation().appliquer(request, response);
-                break;
-
             // -------------------------------------------------------
             // Elèves
             // -------------------------------------------------------
@@ -205,97 +198,3 @@ public class ActionServlet extends HttpServlet {
         return "ActionServlet - point d'entrée unique de l'API";
     }
 }
-
-
-
-
-
-
-// /*
-//  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-//  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
-//  */
-// package com.insa.nicojean.td2.web.controleur;
-
-// import com.insa.nicojean.td2.web.modele.ConsulterListeDemandesAction;
-// import com.insa.nicojean.td2.web.vue.ListeDemandesSerialisation;
-// import java.io.IOException;
-// import jakarta.servlet.ServletException;
-// import jakarta.servlet.annotation.WebServlet;
-// import jakarta.servlet.http.HttpServlet;
-// import jakarta.servlet.http.HttpServletRequest;
-// import jakarta.servlet.http.HttpServletResponse;
-
-// /**
-//  *
-//  * @author ncolomb
-//  */
-// @WebServlet(name = "ActionServlet", urlPatterns = {"/api/*"})
-// public class ActionServlet extends HttpServlet {
-
-//     /**
-//      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-//      * methods.
-//      *
-//      * @param request servlet request
-//      * @param response servlet response
-//      * @throws ServletException if a servlet-specific error occurs
-//      * @throws IOException if an I/O error occurs
-//      */
-//     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-//             throws ServletException, IOException {
-            
-//             String path = request.getPathInfo(); // /consulter-liste-demandes
-        
-//         System.out.println("Param Path : " + path);
-        
-//         switch (path) {
-//             case "/consulter-liste-demandes":
-//                 new ConsulterListeDemandesAction().execute(request);
-//                 new ListeDemandesSerialisation().appliquer(request, response);
-//                 break;
-//             default:
-                        
-//         }
-//     }
-
-//     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-//     /**
-//      * Handles the HTTP <code>GET</code> method.
-//      *
-//      * @param request servlet request
-//      * @param response servlet response
-//      * @throws ServletException if a servlet-specific error occurs
-//      * @throws IOException if an I/O error occurs
-//      */
-//     @Override
-//     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//             throws ServletException, IOException {
-//         processRequest(request, response);
-//     }
-
-//     /**
-//      * Handles the HTTP <code>POST</code> method.
-//      *
-//      * @param request servlet request
-//      * @param response servlet response
-//      * @throws ServletException if a servlet-specific error occurs
-//      * @throws IOException if an I/O error occurs
-//      */
-//     @Override
-//     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-//             throws ServletException, IOException {
-//         processRequest(request, response);
-//     }
-
-//     /**
-//      * Returns a short description of the servlet.
-//      *
-//      * @return a String containing servlet description
-//      */
-//     @Override
-//     public String getServletInfo() {
-//         return "Short description";
-//     }// </editor-fold>
-
-// }
