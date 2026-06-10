@@ -8,35 +8,46 @@
     </head>
     <body>
         <header>
-            <p>INSTRUCT'IF</p>
+            <div class="nav">
+                <p>INSTRUCT'IF</p>
+                <a href="demandeIntervention.html">Intervenir</a>
+                <a href="historiqueEleve.html">Tableau de bord</a>
+            </div>
+            
+            <p>Emma</p>
         </header>
 
 
-        <h1 class="form-title">Page de connexion</h1>
+        <h1 class="form-title">Intervention acceptée</h1>
         
+
         <form id="form" class="login-form">
             <div class="label-input">
-                <label for="inputMail">Email :</label>
-                <input id="inputMail" type="email" />
-            </div>
-            
-            <div class="label-input">
-                <label for="inputPassword">Password :</label>
-                <input id="inputPassword" type="password" />
+                <h1>Aymann - 6e</h1>
+                <button class="btn blue">Voir fiche de l'élève</button>
             </div>
 
-            <div class="label-input">
-                <label for="inputRemember">Se souvenir de moi</label>
-                <input id="inputRemember" type="checkbox" />
-            </div>
+            <p>Thème : Java</p>
+            <p>Description :</p>
+            <p>Je n'arrive pas à faire une boucle for</p>
 
             <div class="label-input">
-                <button class="btn">Se connecter</button>
-                <a class="btn" href="creationCompteEleve.html">Créer un compte élève</a>
+                <button class="btn red">Terminer</button>
+                <button class="btn blue">Rejoindre</button>
             </div>
         </form>
 
         <script>
+            var toggler = document.getElementsByClassName("caret");
+            var i;
+
+            for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function() {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+            }
+
             function initPage() {
                 console.log("Initialisation de la page");
                 listerDemandes();
