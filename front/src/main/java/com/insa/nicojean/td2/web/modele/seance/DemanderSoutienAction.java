@@ -1,5 +1,6 @@
 package com.insa.nicojean.td2.web.modele.seance;
 
+import com.insa.nicojean.td2.web.controleur.ActionServlet;
 import com.insa.nicojean.td2.web.modele.Action;
 import instructif.metier.modele.Eleve;
 import instructif.metier.modele.SeanceSoutien;
@@ -13,7 +14,7 @@ public class DemanderSoutienAction extends Action {
 
     @Override
     public void execute(HttpServletRequest request) {
-        Long idEleve = Long.parseLong(request.getParameter("idEleve"));
+        Long idEleve = (Long) request.getAttribute(ActionServlet.REQUEST_ELEVE_ID);
         Long idTheme = Long.parseLong(request.getParameter("idTheme"));
         String description = request.getParameter("description");
 
