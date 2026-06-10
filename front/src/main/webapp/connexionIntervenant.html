@@ -5,6 +5,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css" />
+        <script src="lib/sweetalert.min.js"></script>
+        <script src="script.js"></script>
     </head>
     <body>
         <header>
@@ -31,53 +33,33 @@
             </div>
 
             <div class="label-input">
-                <button class="btn">Se connecter</button>
+                <button class="btn" type="submit">Se connecter</button>
             </div>
         </form>
 
         <script>
             function initPage() {
-                console.log("Initialisation de la page");
-                listerDemandes();
-                document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
-                    console.log("Click sur le bouton 'Lister demandes'");
-                    listerDemandes();
+                document.getElementById('form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    connexionIntervenant();
                 });
             };
             
-            async function listerDemandes() {
-                console.log("Appel de l'Action: Consulter liste demandes");
-                let url = './ActionServlet?todo=consulter-liste-demandes';
-                let jsonResponse = await fetch(url)
-                        .then(
-                            function(httpResponse) {
-                                return httpResponse.json();
-                            }
-                        )
-                        .catch(
-                            function(error) {
-                                console.log(error);
-                                return null;
-                            }
-                        );
-                console.log(jsonResponse);
+            async function connexionIntervenant() {
+                const email = document.getElementById('inputMail').value;
+                const password = document.getElementById('inputPassword').value;
+
+                if (email === "" || password === "") return;
+
+                const url = './api/intervenants/authentifier';
+                const body = {
+                    mail: email,
+                    password: password
+                };
+                
+                const jsonResponse = await postRequest(url, body, "Impossible de se connecter.");
                 if (jsonResponse) {
-                    console.log('Affichage de la liste de demandes');
-                    const listeContainer = document.getElementById("liste-demandes");
-                    
-                    let html = "";
-                    for (demande of jsonResponse["demandes"]) {
-                        html += `
-                            <li>#` + demande["id"] + ` : ` + demande["description"] + ` faite le ` + demande["dateCreation"] + `</li>
-                        `;
-            
-                        //const elmtLi = document.createElement("li");
-                        //const elmtTxt = document.createTextNode(demande["description"]);
-                        //elmtLi.appendChild(elmtTxt);
-                        //listeContainer.appendChild(elmtLi);
-                    }
-                    
-                    listeContainer.innerHTML = html;
+                    window.location.href = "historiqueIntervenant.html";
                 }
             }
             window.onload = initPage;

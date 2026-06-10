@@ -5,6 +5,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css" />
+        <script src="lib/sweetalert.min.js"></script>
+        <script src="script.js"></script>
     </head>
     <body>
         <header>
@@ -60,15 +62,13 @@
 
         <script>
             function initPage() {
-                console.log("Initialisation de la page");
-                listerDemandes();
+                listerHistoriqueEleve();
                 document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
-                    console.log("Click sur le bouton 'Lister demandes'");
-                    listerDemandes();
+                    listerHistoriqueEleve();
                 });
             };
             
-            async function listerDemandes() {
+            async function listerHistoriqueEleve() {
                 console.log("Appel de l'Action: Consulter liste demandes");
                 let url = './ActionServlet?todo=consulter-liste-demandes';
                 let jsonResponse = await fetch(url)
