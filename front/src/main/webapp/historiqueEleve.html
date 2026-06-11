@@ -12,11 +12,11 @@
         <header>
             <div class="nav">
                 <p>INSTRUCT'IF</p>
-                <a href="demandeIntervention.html">Faire demande</a>
+                <a href="demandeEleve.html">Faire demande</a>
                 <a href="historiqueEleve.html">Historique</a>
             </div>
             
-            <p>Matis</p>
+            <p id="prenom-compte">MISSINGNO</p>
         </header>
 
 
@@ -34,41 +34,25 @@
                     </tr>
                 </thead>
                 <tbody id="liste-sceances">
-                    <tr>
-                        <td>1</td>
-                        <td>2024-06-01</td>
-                        <td>Java</td>
-                        <td>Jean Dupont</td>
-                        <td><a href="#">Voir plus</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2024-06-15</td>
-                        <td>Python</td>
-                        <td>Marie Curie</td>
-                        <td><a href="#">Voir plus</a></td>
-                    </tr>
                 </tbody>
             </table>
 
             <div class="details" id="details">
-                <p>Description :</p>
-                <p>oui</p>
-                <p>Bilan :</p>
-                <p>oui</p>
+                <p>Cliquez sur la 🔎 d'une séance pour voir les détails.</p>
             </div>
         </div>
         
 
         <script>
             function initPage() {
+                recupererPrenomCompte();
                 listerHistoriqueEleve();
             };
             
             async function listerHistoriqueEleve() {
-                const url = './api/sceances/historiqueEleve';
+                const url = './api/seances/historiqueEleve';
                 
-                const jsonResponse = await getRequest(url, "Impossible de se connecter.");
+                const jsonResponse = await getRequest(url, "Impossible de charger l'historique des séances.");
                 
                 if (jsonResponse) {
                     const tbodyContainer = document.getElementById("liste-sceances");
@@ -78,10 +62,10 @@
                         html += `
                             <tr>
                                 <td>` + sceance["id"] + `</td>
-                                <td>` + sceance["date"] + `</td>
+                                <td>` + sceance["dateHeure"] + `</td>
                                 <td>` + sceance["theme"] + `</td>
                                 <td>` + sceance["intervenant"] + `</td>
-                                <td><button onclick="voirDetails(` + sceance["id"] + `)">Voir plus</button></td>
+                                <td><button onclick="voirDetails(` + sceance["id"] + `)">🔎</button></td>
                             </tr>
                         `;
                     }
@@ -91,21 +75,31 @@
             }
 
             async function voirDetails(idSceance) {
-                const url = './api/sceances/' + idSceance;
+                const url = './api/seances/recuperer?id=' + idSceance;
                 
-                const jsonResponse = await getRequest(url, "Impossible de se connecter.");
+                const jsonResponse = await getRequest(url, "Impossible de charger les détails de la séance.");
                 
                 if (jsonResponse) {
                     const detailsContainer = document.getElementById("details");
                     
                     let html = `
                         <p>Description :</p>
-                        <p>` + jsonResponse["description"] + `</p>
+                        <p>` + jsonResponse["messageDemande"] + `</p>
                         <p>Bilan :</p>
-                        <p>` + jsonResponse["bilan"] + `</p>
+                        <p>` + jsonResponse["compteRendu"] + `</p>
                     `;
                     
                     detailsContainer.innerHTML = html;
+                }
+            }
+
+            async function recupererPrenomCompte() {
+                const sessionStorage = window.sessionStorage;
+                const prenom = sessionStorage.getItem("prenom");
+
+                if (prenom) {
+                    const prenomContainer = document.getElementById("prenom-compte");
+                    prenomContainer.innerText = prenom;
                 }
             }
 

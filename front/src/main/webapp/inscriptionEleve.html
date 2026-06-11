@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Connexion élève</title>
+        <title>Inscription élève</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css" />
-        <script src="sweetalert.min.js"></script>
+        <script src="lib/sweetalert.min.js"></script>
         <script src="script.js"></script>
     </head>
     <body>
@@ -22,23 +22,23 @@
             </div>
             
             <div class="label-input">
-                <label for="inputPassword">Prénom :</label>
-                <input id="inputPassword" type="text" />
+                <label for="inputPrenom">Prénom :</label>
+                <input id="inputPrenom" type="text" />
             </div>
 
             <div class="label-input">
-                <label for="inputPassword">Date de naissance :</label>
-                <input id="inputPassword" type="date" />
+                <label for="inputDateNaissance">Date de naissance :</label>
+                <input id="inputDateNaissance" type="date" />
             </div>
 
             <div class="label-input">
-                <label for="inputPassword">Code d'établissement :</label>
-                <input id="inputPassword" type="text" />
+                <label for="inputCodeEtab">Code d'établissement :</label>
+                <input id="inputCodeEtab" type="text" />
             </div>
 
             <div class="label-input">
-                <label for="inputPassword">Classe :</label>
-                <select id="inputPassword">
+                <label for="selectClasse">Classe :</label>
+                <select id="selectClasse">
                     <option value="6">6e</option>
                     <option value="5">5e</option>
                     <option value="4">4e</option>
@@ -57,53 +57,47 @@
             </div>
 
             <div class="label-input">
-                <button class="btn">Valider l'inscription</button>
+                <button class="btn" type="submit">Valider l'inscription</button>
             </div>
         </form>
 
         <script>
             function initPage() {
-                console.log("Initialisation de la page");
-                listerDemandes();
-                document.getElementById('bouton-lister-demandes').addEventListener('click', function() {
-                    console.log("Click sur le bouton 'Lister demandes'");
-                    listerDemandes();
+                document.getElementById('form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    inscriptionEleve();
                 });
             };
             
-            async function listerDemandes() {
-                console.log("Appel de l'Action: Consulter liste demandes");
-                let url = './ActionServlet?todo=consulter-liste-demandes';
-                let jsonResponse = await fetch(url)
-                        .then(
-                            function(httpResponse) {
-                                return httpResponse.json();
-                            }
-                        )
-                        .catch(
-                            function(error) {
-                                console.log(error);
-                                return null;
-                            }
-                        );
-                console.log(jsonResponse);
+            async function inscriptionEleve() {
+                const nom = document.getElementById('inputNom').value;
+                const prenom = document.getElementById('inputPrenom').value;
+                const dateNaissance = document.getElementById('inputDateNaissance').value;
+                const codeEtab = document.getElementById('inputCodeEtab').value;
+                const classe = document.getElementById('selectClasse').value;
+                const mail = document.getElementById('inputMail').value;
+                const password = document.getElementById('inputPassword').value;
+                
+
+                if (nom === "" || prenom === "" || dateNaissance === "" || classe === "" || codeEtab === "" || mail === "" || password === "") return;
+
+                const url = './api/eleves/inscrire';
+                const body = {
+                    nom: nom,
+                    prenom: prenom,
+                    dateNaissance: dateNaissance,
+                    codeEtablissement: codeEtab,
+                    classe: classe,
+                    mail: mail,
+                    motDePasse: password
+                };
+                
+                const jsonResponse = await postRequest(url, body, "Impossible de vous inscrire.");
                 if (jsonResponse) {
-                    console.log('Affichage de la liste de demandes');
-                    const listeContainer = document.getElementById("liste-demandes");
-                    
-                    let html = "";
-                    for (demande of jsonResponse["demandes"]) {
-                        html += `
-                            <li>#` + demande["id"] + ` : ` + demande["description"] + ` faite le ` + demande["dateCreation"] + `</li>
-                        `;
-            
-                        //const elmtLi = document.createElement("li");
-                        //const elmtTxt = document.createTextNode(demande["description"]);
-                        //elmtLi.appendChild(elmtTxt);
-                        //listeContainer.appendChild(elmtLi);
-                    }
-                    
-                    listeContainer.innerHTML = html;
+                    swal("Inscription réussie !", "Vous pouvez maintenant vous connecter avec votre compte.", "success")
+                    .then(() => {
+                        window.location.href = "connexionEleve.html";
+                    });
                 }
             }
             window.onload = initPage;
